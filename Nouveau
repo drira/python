@@ -1,0 +1,224 @@
+from tkinter import *
+import tkinter.messagebox as MessageBox
+import mysql.connector as mysql
+
+
+
+
+
+
+def insert():
+    ID = e_ID.get()
+    NOM = e_NOM.get();
+    PRENOM = e_PRENOM.get();
+    CIN = e_CIN.get()
+    DATE = e_DATE.get()
+    ADRESSE = e_ADRESSE.get()
+    PORTABLE = e_PORTABLE.get()
+    MAIL = e_MAIL.get()
+    PASSE = e_PASSE.get()
+   # 
+
+    if(ID=="" or NOM=="" or PRENOM=="" or CIN=="" or DATE=="" or ADRESSE=="" or PORTABLE=="" or MAIL=="" or PASSE==""):
+        MessageBox.showinfo("Insert Status", "All Fields are required")
+    else:
+        con = mysql.connect(host="localhost",user="phpmyadmin" ,password="0000", database="phpmyadmin")
+        cursor = con.cursor()
+        #IMAGE 
+        cursor.execute("insert into persons values('"+ ID +"','"+ NOM +"','"+ PRENOM +"','"+ CIN +"','"+ DATE +"','"+ ADRESSE +"','"+ PORTABLE +"','"+ MAIL +"','"+ PASSE +"')")
+        cursor.execute("commit");
+        
+        e_ID.delete(0, 'end')
+        e_NOM.delete(0, 'end')
+        e_PRENOM.delete(0, 'end')
+        e_CIN.delete(0, 'end')
+        e_DATE.delete(0, 'end')
+        e_ADRESSE.delete(0, 'end')
+        e_PORTABLE.delete(0, 'end')
+        e_MAIL.delete(0, 'end')
+        e_PASSE.delete(0, 'end')
+     
+        show()
+        MessageBox.showinfo("insert status", "Inserted successfully");
+        con.close();
+        
+def delete():
+    if(ID=="" or NOM=="" or PRENOM==""  or CIN=="" or DATE=="" or ADRESSE=="" or PORTABLE=="" or MAIL=="" or PASSE=="" ):
+         MessageBox.showinfo("Delete Status", "ID is compolsary for delete")
+    else:
+        con = mysql.connect(host="localhost",user="phpmyadmin" ,password="0000", database="phpmyadmin")
+        cursor = con.cursor()
+        cursor.execute("Delete from persons where ID='"+ e_ID.get() +"'")
+        cursor.execute("commit");
+        show()
+        e_ID.delete(0, 'end')
+        e_NOM.delete(0, 'end')
+        e_PRENOM.delete(0, 'end')
+        e_CIN.delete(0, 'end')
+        e_DATE.delete(0, 'end')
+        e_ADRESSE.delete(0, 'end')
+        e_PORTABLE.delete(0, 'end')
+        e_MAIL.delete(0, 'end')
+        e_PASSE.delete(0, 'end')
+
+        
+        MessageBox.showinfo("Delete status", "Deleteted successfully");
+        con.close();
+        
+def update():
+    ID = e_ID.get()
+    NOM = e_NOM.get();
+    PRENOM = e_PRENOM.get();
+    CIN = e_CIN.get()
+    DATE = e_DATE.get()
+    ADRESSE = e_ADRESSE.get()
+    PORTABLE = e_PORTABLE.get()
+    MAIL = e_MAIL.get()
+    PASSE = e_PASSE.get()
+    
+
+    if(ID=="" or NOM=="" or PRENOM=="" or CIN=="" or DATE=="" or ADRESSE=="" or PORTABLE=="" or MAIL=="" or PASSE=="" ):
+        MessageBox.showinfo("Update Status", "All Fields are required")
+    else:
+        con = mysql.connect(host="localhost",user="phpmyadmin" ,password="0000", database="phpmyadmin")
+        cursor = con.cursor() 
+        cursor.execute("update persons set NOM='"+ NOM +"', PRENOM='" + PRENOM +"' , CIN='" + CIN +"' , DATE='" + DATE +"' , ADRESSE='" + ADRESSE +"' , PORTABLE='" + PORTABLE +"' , MAIL='" + MAIL +"' , PASSE='" + PASSE +"' where ID='" + ID +"'")
+        cursor.execute("commit");
+        
+        e_ID.delete(0, 'end')
+        e_NOM.delete(0, 'end')
+        e_PRENOM.delete(0, 'end')
+        e_CIN.delete(0, 'end')
+        e_DATE.delete(0, 'end')
+        e_ADRESSE.delete(0, 'end')
+        e_PORTABLE.delete(0, 'end')
+        e_MAIL.delete(0, 'end')
+        e_PASSE.delete(0, 'end')
+        
+        show()
+        MessageBox.showinfo("Update status", "Updated successfully");
+        con.close();
+        
+def get():    
+    if(e_ID.get() == ""):
+         MessageBox.showinfo("Fetch Status", "ID is compolsary for delete")
+    else:
+        con = mysql.connect(host="localhost",user="phpmyadmin" ,password="0000", database="phpmyadmin")
+        cursor = con.cursor()
+        cursor.execute("select * from persons where id='"+ e_ID.get() +"'")
+        rows = cursor.fetchall()
+        
+        for row in rows:
+            e_NOM.insert(0, row[1])
+            e_PRENOM.insert(0, row[2])
+            e_CIN.insert(0, row[3])
+            e_DATE.insert(0, row[4])
+            e_ADRESSE.insert(0, row[5])
+            e_PORTABLE.insert(0, row[6])
+            e_MAIL.insert(0, row[7])
+            e_PASSE.insert(0, row[8])
+            
+            
+            
+            
+        con.close();
+
+def show():
+    
+        con = mysql.connect(host="localhost",user="phpmyadmin" ,password="0000", database="phpmyadmin")
+        cursor = con.cursor()
+        cursor.execute("select * from persons ")      
+        rows = cursor.fetchall()
+        list.delete(0, list.size())
+        
+        for row in rows:
+            insertData = str (row[0])+ ') '+row[1]
+            list.insert(list.size()+1 ,insertData)
+            
+        con.close();
+root = Tk()
+root.geometry("600x600")
+root.title("python+Tkinter+MySql")
+
+ID = Label(root,text='ID',font=('bold', 10))
+ID.place(x=20,y=30)
+           
+NOM = Label(root,text='NOM',font=('bold', 10))
+NOM.place(x=20,y=60)
+             
+PRENOM = Label(root,text='PRENOM',font=('bold', 10))
+PRENOM.place(x=20,y=90);
+
+CIN = Label(root,text='CIN',font=('bold', 10))
+CIN.place(x=20,y=120);
+
+DATE = Label(root,text='DATE DE NAISSANCE',font=('bold', 10))
+DATE.place(x=20,y=150)
+
+ADRESSE = Label(root,text='ADRESSE',font=('bold', 10))
+ADRESSE.place(x=20,y=180)
+
+PORTABLE = Label(root,text='N PORTABLE',font=('bold', 10))
+PORTABLE.place(x=20,y=210)
+
+MAIL = Label(root,text='E MAIL',font=('bold', 10))
+MAIL.place(x=20,y=240)
+
+PASSE = Label(root,text='MOT DE PASSE',font=('bold', 10))
+PASSE.place(x=20,y=270)
+
+
+
+
+e_ID = Entry()
+e_ID.place(x=170, y=30)
+
+e_NOM = Entry()
+e_NOM.place(x=170, y=60)             
+
+e_PRENOM = Entry()
+e_PRENOM.place(x=170, y=90)
+
+e_CIN = Entry()
+e_CIN.place(x=170, y=120)
+
+e_DATE = Entry()
+e_DATE.place(x=170, y=150)
+
+e_ADRESSE = Entry()
+e_ADRESSE.place(x=170, y=180)
+
+e_PORTABLE = Entry()
+e_PORTABLE.place(x=170, y=210)
+
+e_MAIL = Entry()
+e_MAIL.place(x=170, y=240)
+
+e_PASSE = Entry()
+e_PASSE.place(x=170, y=270)
+
+
+#app.setEntryDefault("e1", "Age here")
+
+
+insert = Button(root, text="Insert", font=("italic", 10), bg="white", command=insert)
+insert.place(x=20, y=350)
+
+delete = Button(root, text="Delete", font=("italic", 10), bg="white", command=delete)
+delete.place(x=90, y=350)
+
+update = Button(root, text="Update", font=("italic", 10), bg="white", command=update)
+update.place(x=170, y=350)
+
+get = Button(root, text="Get", font=("italic", 10), bg="white", command=get)
+get.place(x=250, y=350)
+
+list = Listbox(root)
+list.place(x=340, y=60)
+show()
+
+
+
+root.mainloop()
+
+
