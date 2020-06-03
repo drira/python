@@ -5,6 +5,7 @@ from tkinter import ttk
 import os
 import subprocess
 import sys
+import mysql.connector as mysql
 
         
 def commande():
@@ -36,6 +37,22 @@ def comman():
     #command2 = "/home/pi/Desktop/util/cbd.sh"
     subprocess.Popen(command)
     #subprocess.kill()
+    
+   
+def show():
+    
+        con = mysql.connect(host="localhost",user="phpmyadmin" ,password="0000", database="phpmyadmin")
+        cursor = con.cursor()
+        cursor.execute("select * from rec ")      
+        rows = cursor.fetchall()
+        list.delete(0, list.size())
+        
+        for row in rows:
+            insertData = str (row[1]+'        '+row[2])
+            list.insert(list.size()+1 ,insertData)
+            
+        con.close();    
+   
     
 root = Tk()
 root.geometry("1200x560")
@@ -69,6 +86,11 @@ comman.place(x=1000, y=35)
 bouton_terminer = Button(root, text = 'Déconnecter', bg='#E9E9E9',fg='#24627A', command = root.destroy)
 bouton_terminer.place(x=1000, y=500)
 
+
+list = Listbox(root)
+list.place(x=800, y=30)
+
+show()
 root.mainloop()
 
 

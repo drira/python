@@ -26,7 +26,19 @@ def dec():
     cursor.execute("Delete  from Logging ")
     cursor.execute("commit");
     """
+def show():
     
+        con = mysql.connect(host="localhost",user="phpmyadmin" ,password="0000", database="phpmyadmin")
+        cursor = con.cursor()
+        cursor.execute("select * from rec ")      
+        rows = cursor.fetchall()
+        list.delete(0, list.size())
+        
+        for row in rows:
+            insertData = str (row[1]+'        '+row[2])
+            list.insert(list.size()+1 ,insertData)
+            
+        con.close();    
 
     
 root = Tk()
@@ -54,6 +66,16 @@ commande.place(x=82, y=100, width=433, height=51)
 bouton_terminer = Button(root, text = 'Déconnecter', bg='#E9E9E9',fg='#000000', command =dec)
 bouton_terminer.place(x=1000, y=500)
 
+
+
+list = Listbox(root)
+list.place(x=800, y=30)
+
+show()
+
+
 root.mainloop()
+
+
 
 

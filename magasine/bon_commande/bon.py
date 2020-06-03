@@ -22,7 +22,7 @@ def insert():
         con = mysql.connect(host="localhost",user="phpmyadmin" ,password="0000", database="phpmyadmin")
         cursor = con.cursor()
         
-        cursor.execute("insert into bonEntre (date_bon  ,num_fact ,date_fact ) values( CURRENT_TIMESTAMP ,'"+ num_fact +"','"+ date_fact +"')")
+        cursor.execute("insert into bonEntre (date_bon  ,num_fact ,date_fact ,ref_mat ) values( CURRENT_TIMESTAMP ,'"+ num_fact +"','"+ date_fact +"',NULL)")
         cursor.execute("commit");
       
         e_date_fact.delete(0, 'end')

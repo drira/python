@@ -65,6 +65,7 @@ def fenetrefn():
           cursor = con.cursor()
           cursorUpdate = con.cursor()
           cursorlogout = con.cursor()
+          cursorDelete = con.cursor()
           cursor.execute('select * from persons where CIN = %s AND PASSE = %s', (CIN,PASSE,))
           account = cursor.fetchone()
         
@@ -74,10 +75,21 @@ def fenetrefn():
              POSTE=account[8]
  
              if account[8] == 'Employe':
+                  
+                       
+                  cursorVERIF = con.cursor() 
+                  cursorVERIF.execute("select * from commande join (fabrication,matierePremiere) on( commande.REF_prod=fabrication.REF_prod and fabrication.REF_mat=matierePremiere.REF_mat) where etat =0 and cin ='"+str(CIN)+"'")      
+                  rows1 = cursorVERIF.fetchall()
+                
+                  for row1 in rows1:
+                
+                      a = int(row1[12]) - (int(row1[2])*int(row1[9]))
+                      cursorDelete.execute("update matierePremiere set QTE_mat ="+str(a)+" where REf_mat='"+str(row1[11])+"'")
+                  
                   cursorUpdate.execute('update commande set etat =1 where cin ="'+str(CIN)+'"')
-                  cursorUpdate.execute("commit");
+                  cursorUpdate.execute("commit");  
                   cursorlogout.execute('Delete  from Logging where cin ="'+str(CIN)+'"')
-                  cursorlogout.execute("commit");
+                  cursorlogout.execute("commit");       
           else:
                MessageBox.showinfo("insert status","CIN ou le Mot de passe est incorrect ");
                

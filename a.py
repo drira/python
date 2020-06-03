@@ -1,24 +1,28 @@
-import Tkinter as tk
+import time
+valeur = time.time ()
 
-class SampleApp(tk.Tk):
-    def __init__(self, *args, **kwargs):
-        tk.Tk.__init__(self, *args, **kwargs)
-        button = tk.Button(text="Save", command=self.save)
-        button.pack(side="top")
-        self.widgets = []
-        for line in ["one","two","three","four"]:
-            widget = tk.Entry(self)
-            widget.insert(0, line)
-            widget.pack(side="top", fill="x")
-            self.widgets.append(widget)
+def stopWatch(value):
+    '''From seconds to Days;Hours:Minutes;Seconds'''
 
-    def save(self):
-        for widget in self.widgets:
-            print widget.get()
+    valueD = (((value/365)/24)/60)
+    Days = int (valueD)
 
-if __name__ == "__main__":
-    app = SampleApp()
-    app.mainloop()
-    
-    
-    
+    valueH = (valueD-Days)*365
+    Hours = int(valueH)
+
+    valueM = (valueH - Hours)*24
+    Minutes = int(valueM)
+
+    valueS = (valueM - Minutes)*60
+    Seconds = int(valueS)
+
+
+    print (Days,";",Hours,":",Minutes,";",Seconds)
+
+
+
+
+start = time.time() # What in other posts is described is
+
+end = time.time()         
+stopWatch(end-start) #Use then my code

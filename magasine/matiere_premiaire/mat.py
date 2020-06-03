@@ -24,15 +24,18 @@ def insert():
         cursor = con.cursor()
         up = con.cursor()
         ins = con.cursor()
+        coh = con.cursor()
         cursor.execute ("select * from matierePremiere where ref_mat="+ref_mat+";");
         account = cursor.fetchone()
         if account :
             up.execute( "UPDATE matierePremiere SET QTE_mat = qte_mat +"+qte_mat+" WHERE ref_mat='"+e_ref_mat.get()+"';" )
         else :
             ins.execute("insert into matierePremiere (REf_mat ,QTE_mat , Design_mat , Emp_mat ) values('"+ ref_mat +"','"+ qte_mat +"','"+ design_mat +"','"+ emp_mat +"')")
+            coh.execute("update bonEntre set ref_mat='"+ref_mat+"' where ref_mat=NULL")
         cursor.execute("commit");
         up.execute("commit");
         ins.execute("commit");
+        
         e_ref_mat.delete(0, 'end')
         e_qte_mat.delete(0, 'end')
         e_design_mat.delete(0, 'end')
